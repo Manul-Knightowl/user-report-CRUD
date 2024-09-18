@@ -4,10 +4,10 @@ const docClient = new DynamoDB.DocumentClient();
 
 export const getReport = async (event) => {
     try {
-        // Parse the input from the request body
+        
         const { refNum, nic, name, age } = JSON.parse(event.body);
 
-        // Ensure all fields are provided
+        
         if (!refNum || !nic || !name || !age) {
             return {
                 statusCode: 400,
@@ -17,12 +17,12 @@ export const getReport = async (event) => {
             };
         }
 
-        // Initialize scan parameters
+        
         const params = {
             TableName: 'Reports',
             FilterExpression: '#name = :name AND nic = :nic AND id = :id',
             ExpressionAttributeNames: {
-                '#name': 'name', // Use an alias for the reserved keyword
+                '#name': 'name', 
             },
             ExpressionAttributeValues: {
                 ':name': name,
@@ -31,7 +31,7 @@ export const getReport = async (event) => {
             },
         };
 
-        // Execute scan operation
+        
         const result = await docClient.scan(params).promise();
 
         if (result.Items.length === 0) {
